@@ -68,33 +68,37 @@ func start(pos):
 
 func set_anim(anim):
 	$Body.animation = anim
-	$Gloves/Glove_Front.animation = anim
-	$Gloves/Glove_Back.animation = anim
+	$Gloves/Glove_Front.set_anim(anim)
+	$Gloves/Glove_Back.set_anim(anim)
 
 func flip_anim():
 	if mouse_pos > position and is_flipped:
 		$Body.flip_h = false
-		$Gloves/Glove_Front.flip_v = false
-		$Gloves/Glove_Back.flip_v = false
+		$Gloves/Glove_Front.set_flip_v(false)
+		$Gloves/Glove_Back.set_flip_v(false)
 		is_flipped = false
 	elif mouse_pos < position and !is_flipped:
 		$Body.flip_h = true
-		$Gloves/Glove_Front.flip_v = true
-		$Gloves/Glove_Back.flip_v = true
+		$Gloves/Glove_Front.set_flip_v(true)
+		$Gloves/Glove_Back.set_flip_v(true)
 		is_flipped = true
 	
 func jab():
-	if jab_scene:
-		if jab_f != true:
-			jab_f = true
-			#sprite wechseln
-		var jab = jab_scene.instance()
-
-		add_child(jab)
-		jab.position = $Gloves/Glovespawn.position
-		jab.rotation = self.global_position.direction_to(get_global_mouse_position()).angle()
-		jab_timer.start()
-		$RandomJabSFXPlayer.play_random()
+	if $Gloves/Glove_Front.flag_jab == false:
+		$Gloves/Glove_Front.jab()
+	elif $Gloves/Glove_Back.flag_jab == false:
+		$Gloves/Glove_Back.jab()
+#	if jab_scene:
+#		if jab_f != true:
+#			jab_f = true
+#			#sprite wechseln
+#		var jab = jab_scene.instance()
+#
+#		add_child(jab)
+#		jab.position = $Gloves/Glovespawn.position
+#		jab.rotation = self.global_position.direction_to(get_global_mouse_position()).angle()
+#		jab_timer.start()
+#		$RandomJabSFXPlayer.play_random()
 
 func hook():
 	if hook_scene:

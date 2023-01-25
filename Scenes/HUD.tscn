@@ -55,7 +55,7 @@ margin_top = -52.0
 margin_right = 1000.0
 margin_bottom = 24.0
 theme = SubResource( 4 )
-value = 10.0
+value = 100.0
 
 [node name="Exp" type="ProgressBar" parent="Container"]
 margin_top = 28.0

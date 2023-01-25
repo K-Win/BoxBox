@@ -1,0 +1,64 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Scripts/Glove.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Boxer_Red/Idle/Gloves/Boxer_Red_Glove_Idle_Front3.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Boxer_Red/Idle/Gloves/Boxer_Red_Glove_Idle_Front1.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front7.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Boxer_Red/Idle/Gloves/Boxer_Red_Glove_Idle_Front2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front1.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Boxer_Red/Idle/Gloves/Boxer_Red_Glove_Idle_Front4.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front6.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front8.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front4.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front2.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front5.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Boxer_Red/Running/Gloves/Boxer_Red_Glove_Running_Front3.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Boxer_Red/Jab/Boxer_Red_Glove_Jab1.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Boxer_Red/Jab/Boxer_Red_Glove_Jab3.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Boxer_Red/Jab/Boxer_Red_Glove_Jab4.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Boxer_Red/Jab/Boxer_Red_Glove_Jab2.png" type="Texture" id=17]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 14 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 16 ) ],
+"loop": false,
+"name": "Jab",
+"speed": 8.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "Running",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 14.2255, 8.62914 )
+
+[node name="Glove_Front" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource( 1 )
+
+[node name="Glove" type="AnimatedSprite" parent="."]
+position = Vector2( 12, 0 )
+scale = Vector2( 0.984145, 0.985034 )
+z_index = 1
+frames = SubResource( 1 )
+animation = "Idle"
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 14, 0 )
+shape = SubResource( 2 )
+
+[node name="Jab" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 12, 0 )
+scale = Vector2( 1.18097, 1.18204 )
+bus = "Effects"
+
+[connection signal="area_entered" from="." to="." method="_on_Glove_Front_area_entered"]
