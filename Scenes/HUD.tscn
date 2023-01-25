@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Font/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/HUD.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.564706, 0.141176, 0.141176, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="Theme" id=4]
+ProgressBar/colors/font_color = Color( 1, 1, 1, 1 )
+ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
+ProgressBar/fonts/font = SubResource( 1 )
+ProgressBar/styles/bg = SubResource( 2 )
+ProgressBar/styles/fg = SubResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.968627, 0.890196, 0, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 1 )
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="Container" type="VBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -52.0
+
+[node name="Health" type="ProgressBar" parent="Container"]
+margin_right = 1000.0
+margin_bottom = 24.0
+theme = SubResource( 4 )
+value = 10.0
+
+[node name="Exp" type="ProgressBar" parent="Container"]
+margin_top = 28.0
+margin_right = 1000.0
+margin_bottom = 52.0
+theme = SubResource( 4 )
+theme_type_variation = "EXP"
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/fg = SubResource( 5 )
+
+[node name="EnemyOverlay" type="HBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="EnemysSpawned" type="Label" parent="EnemyOverlay"]
+margin_top = 10.0
+margin_right = 159.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 6 )
+text = "Enemies spawned: "
+
+[node name="NumberEnemys" type="Label" parent="EnemyOverlay"]
+margin_left = 163.0
+margin_top = 10.0
+margin_right = 163.0
+margin_bottom = 30.0
+custom_fonts/font = SubResource( 6 )

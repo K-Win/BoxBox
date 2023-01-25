@@ -1,0 +1,54 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/Boxer_Green/Idle/Boxer_Green3.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Boxer_Green/Idle/Boxer_Green1.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Boxer_Green/Idle/Boxer_Green4.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Boxer_Green/Idle/Boxer_Green2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running5.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running1.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running2.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running3.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running4.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running7.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running6.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Boxer_Green/Running/Boxer_Green_Running8.png" type="Texture" id=13]
+[ext_resource path="res://Audio/PlayerHit.wav" type="AudioStream" id=14]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 1 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "Running",
+"speed": 10.0
+} ]
+
+[node name="Enemy" type="KinematicBody2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 2, 0 )
+frames = SubResource( 1 )
+animation = "Running"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -12, -8, -12, -21, -7, -26, 2, -26, 6, -22, 6, -8, 10, -1, 10, 25, -22, 25, -22, 3 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hitbox"]
+polygon = PoolVector2Array( -12, -8, -12, -21, -7, -26, 2, -26, 6, -22, 6, -8, 10, -1, 10, 25, -22, 25, -22, 3 )
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 14 )
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
