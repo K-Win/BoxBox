@@ -16,6 +16,7 @@ func set_curve(curve):
 	endpoint = curve_pool[curve_pool.size()-1]
 #	$LineToPlayer.set_point_position(0, position)
 #	$LineToPlayer.set_point_position(1, position + curve_pool[curve_pool.size()-1])
+
 func set_endpoint(curve_endpoint):
 	endpoint = curve_endpoint
 

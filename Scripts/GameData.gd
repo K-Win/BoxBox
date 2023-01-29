@@ -17,5 +17,6 @@ enum GameState {
 	INGAME,
 	GAMEOVER
 	}
+	
 var gamestate
 

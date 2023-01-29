@@ -1,44 +1,38 @@
 extends Area2D
 
+#general variables
 signal hit
+var screen_size
+var mouse_pos
+
+#player variables
 export var speed = 400
 export var hp = 100
-var screen_size
-var jab_f = true
-var mouse_pos
-onready var jab_timer = $JabTimer
-onready var hook_timer = $HookTimer
-var jab_cd = 0.5
-var calc_damage = 0
-var max_range = 200
-#var damage
-onready var curve = Curve2D.new()
-
 var is_flipped = false
+#gloves
+onready var glove_front = $Gloves/Glove_Front
+onready var glove_back = $Gloves/Glove_Back
+#provisional variables
+var calc_damage = 0
 
-export(PackedScene) var jab_scene
-export(PackedScene) var hook_scene
 
 func _ready():
-	jab_timer.wait_time = jab_cd
+	
 	var _connect_hit = get_node("../Player").connect("hit", get_node("../CanvasLayer/HUD"), "_update_hp")
 	screen_size = get_viewport_rect().size
 	set_anim("Idle")
-	
-	#curve
-	curve.add_point(Vector2(0,0))
-	curve.add_point(Vector2(0,0))
+
 
 func _process(delta):
 	
 	mouse_pos = get_viewport().get_mouse_position()
 	var velocity = Vector2.ZERO
 	
-	$Gloves.look_at(mouse_pos)
+#	$Gloves.look_at(mouse_pos)
 	
-	if Input.is_action_just_pressed("jab") and jab_timer.is_stopped():
+	if Input.is_action_just_pressed("jab"):
 		jab()
-	if Input.is_action_just_pressed("hook") and hook_timer.is_stopped():
+	if Input.is_action_just_pressed("hook"):
 		hook()
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
@@ -68,57 +62,38 @@ func start(pos):
 
 func set_anim(anim):
 	$Body.animation = anim
-	$Gloves/Glove_Front.set_anim(anim)
-	$Gloves/Glove_Back.set_anim(anim)
+	glove_front.set_anim(anim)
+	glove_back.set_anim(anim)
+
 
 func flip_anim():
 	if mouse_pos > position and is_flipped:
 		$Body.flip_h = false
-		$Gloves/Glove_Front.set_flip_v(false)
-		$Gloves/Glove_Back.set_flip_v(false)
+		glove_front.set_flip_v(false)
+		glove_back.set_flip_v(false)
 		is_flipped = false
 	elif mouse_pos < position and !is_flipped:
 		$Body.flip_h = true
-		$Gloves/Glove_Front.set_flip_v(true)
-		$Gloves/Glove_Back.set_flip_v(true)
+		glove_front.set_flip_v(true)
+		glove_back.set_flip_v(true)
 		is_flipped = true
 	
+	
 func jab():
-	if $Gloves/Glove_Front.flag_jab == false:
-		$Gloves/Glove_Front.jab()
-	elif $Gloves/Glove_Back.flag_jab == false:
-		$Gloves/Glove_Back.jab()
-#	if jab_scene:
-#		if jab_f != true:
-#			jab_f = true
-#			#sprite wechseln
-#		var jab = jab_scene.instance()
-#
-#		add_child(jab)
-#		jab.position = $Gloves/Glovespawn.position
-#		jab.rotation = self.global_position.direction_to(get_global_mouse_position()).angle()
-#		jab_timer.start()
-#		$RandomJabSFXPlayer.play_random()
+	if can_attack(glove_front):
+		glove_front.jab()
+	elif can_attack(glove_back):
+		glove_back.jab()
 
 func hook():
-	if hook_scene:
-		hook_timer.start()
-		hook_timer.paused = true
-		var hook = hook_scene.instance()
-		add_child(hook)
-		var curve_endpoint
-		var v = (mouse_pos - position ) / scale
-		if v.length() > max_range:
-			curve_endpoint = v.normalized()*max_range
-		else:
-			curve_endpoint = v
-		curve.set_point_position(1, curve_endpoint)
-		curve.set_point_out(0,Vector2(v.y,-v.x))
-		curve.set_point_in(1,Vector2(curve_endpoint.y/2,-curve_endpoint.x/2))
-		hook.set_curve(curve)
-		hook.set_endpoint(curve_endpoint)
-		hook.position = $Gloves/Glovespawn.position
-		$RandomJabSFXPlayer.play_random()
+	if can_attack(glove_front):
+		glove_front.hook()
+	elif can_attack(glove_back):
+		glove_back.hook()
+
+func can_attack(glove)-> bool:
+	return glove.atkState == glove.AtkState.READY
+
 
 func _on_HitBox_area_entered(_area):
 	#check for enemytype, set calc_damage based on enemy type and emit signal
@@ -126,6 +101,3 @@ func _on_HitBox_area_entered(_area):
 	$DamageSound.play()
 	hp = hp -calc_damage
 	emit_signal("hit", calc_damage)
-
-func _on_hook_completed():
-	hook_timer.paused = false

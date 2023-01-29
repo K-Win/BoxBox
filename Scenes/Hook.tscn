@@ -27,6 +27,7 @@ curve = SubResource( 2 )
 loop = false
 
 [node name="Glove_Hook" parent="HookPath/Path2D/PathFollow2D" instance=ExtResource( 2 )]
+script = null
 
 [node name="LineToPlayer" type="Line2D" parent="."]
 default_color = Color( 0.898039, 0, 1, 1 )

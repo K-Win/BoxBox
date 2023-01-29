@@ -4,7 +4,6 @@ export(PackedScene) var level1_scene
 export(PackedScene) var menu_scene
 
 func _ready():
-#	AudioServer.set_bus_volume_db(GameData._masterbus, linear2db(0.1))
 	get_tree().paused = false
 	GameData.gamestate = GameData.GameState.INIT
 	GameData.effects_menu_select = $Audio/Effects/Select
